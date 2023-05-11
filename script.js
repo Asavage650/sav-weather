@@ -1,5 +1,5 @@
-let search = document.querySelector('searchWeather');
-let city = document.querySelector('city');
+let searchInp = document.querySelector('.searchWeather');
+let city = document.querySelector('.city');
 let day = document.querySelector('day-of-week');
 let humidity = document.querySelector('humidity-indicator>.value');
 let wind = document.querySelector('wind-indicator>.value');
@@ -11,10 +11,17 @@ let getWeatherbyCity = async (city) => {
     let endpoint = weatherEndpoint + '&q=' + city;
     let response = await fetch(endpoint);
     let weather = await response.json();
-    console.log (weather);
+    return weather;
 }
 
-search.addEventListener('keydown', (e) => {
-    console.log(e);
+searchInp.addEventListener('keydown', async (e) => {
+    if(e.keyCode === 13) {
+        let weather = await getWeatherbyCity(searchInp.value);
+        updateCurrentWeather(weather);
+    }
 })
+
+let updateCurrentWeather = (data) => {
+    city.textContent = data.name + ',' + data.sys.country;
+}
 
